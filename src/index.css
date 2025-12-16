@@ -1,0 +1,100 @@
+/* Import Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+html {
+  scroll-behavior: smooth; /* Smooth scrolling */
+  font-size: 16px; /* Base font size for rem units */
+}
+
+body {
+  margin: 0; /* Remove default margin */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif; /* Modern system font stack */
+  line-height: 1.5; /* Better readability */
+  background-color: #f9fafb; /* Light background, change if needed */
+  color: #111827; /* Default text color for readability */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600; /* Consistent heading weight */
+  line-height: 1.2; /* Tighter headings */
+}
+
+/* Code blocks */
+code,
+pre {
+  font-family: "Fira Code", "JetBrains Mono", Menlo, Monaco, Consolas,
+    "Courier New", monospace; /* Monospaced fonts */
+  background-color: #f3f4f6; /* Slight background for code */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+  color: #1f2937; /* Dark gray code color */
+}
+
+/* Links */
+a {
+  color: #3b82f6; /* Tailwind blue-500 */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #1e40af; /* Tailwind blue-800 */
+}
+
+/* Lists */
+ul,
+ol {
+  padding-left: 1.25rem; /* Indent lists */
+  margin: 0;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+/* Forms */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  outline: none;
+}
+
+/* Utility: hide scrollbars for smooth UI (optional) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}

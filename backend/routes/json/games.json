@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Food Thief",
+    "details": "Help your character sneak snacks without getting caught!",
+    "game_img": "/assets/images/games/food-thief.png",
+    "age_restriction": "8+",
+    "game_url": "https://example.com/food-thief"
+  },
+  {
+    "id": 2,
+    "name": "Space Explorer",
+    "details": "Navigate through the galaxy, avoid asteroids, and discover new planets.",
+    "game_img": "/assets/images/games/space-explorer.png",
+    "age_restriction": "10+",
+    "game_url": "https://example.com/space-explorer"
+  },
+  {
+    "id": 3,
+    "name": "Puzzle Master",
+    "details": "Solve tricky puzzles and unlock new levels as you go.",
+    "game_img": "/assets/images/games/puzzle-master.png",
+    "age_restriction": "7+",
+    "game_url": "https://example.com/puzzle-master"
+  },
+  {
+    "id": 4,
+    "name": "Jungle Run",
+    "details": "Run through the jungle, jump over obstacles, and collect coins.",
+    "game_img": "/assets/images/games/jungle-run.png",
+    "age_restriction": "8+",
+    "game_url": "https://example.com/jungle-run"
+  },
+  {
+    "id": 5,
+    "name": "Math Whiz",
+    "details": "Solve fun math challenges to earn points and level up.",
+    "game_img": "/assets/images/games/math-whiz.png",
+    "age_restriction": "9+",
+    "game_url": "https://example.com/math-whiz"
+  },
+  {
+    "id": 6,
+    "name": "Color Splash",
+    "details": "Tap and match colors to complete each level with fun combos.",
+    "game_img": "/assets/images/games/color-splash.png",
+    "age_restriction": "6+",
+    "game_url": "https://example.com/color-splash"
+  },
+  {
+    "id": 7,
+    "name": "Robot Rescue",
+    "details": "Guide your robot through mazes and rescue trapped friends.",
+    "game_img": "/assets/images/games/robot-rescue.png",
+    "age_restriction": "8+",
+    "game_url": "https://example.com/robot-rescue"
+  }
+]

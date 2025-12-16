@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "X-Ray",
+    "details": "The X-Ray Department helps doctors take pictures of the inside of your body to see bones, muscles, and organs. It's quick, painless, and helps doctors diagnose injuries or conditions accurately.",
+    "doctor": "Dr. Smith",
+    "doctor_img": "x-ray_doctor.jpg",
+    "nurse": "Nurse Pratchett",
+    "nurse_img": "x-ray_nurse.jpg",
+    "dept_map": "xray_map.jpg",
+    "dept_img": ["xray_img1.jpg", "xray_img2.jpg", "xray_img3.jpg"],
+    "videos": ["FId7wHAd1Cg?si=X28sg4wONarFmS_Z"]
+  },
+  {
+    "id": 2,
+    "name": "Neurology",
+    "details": "The Neurology Department cares for kids with brain, nerve, or muscle issues. Doctors use special tools and tests to understand the brain and nervous system and help children stay healthy.",
+    "doctor": "Dr. Jones",
+    "doctor_img": "neurology_doctor.jpg",
+    "nurse": "Nurse Stevenson",
+    "nurse_img": "neurology_nurse.jpg",
+    "dept_map": "neurology_map.jpg",
+    "dept_img": [
+      "neurology_img1.jpg",
+      "neurology_img2.jpg",
+      "neurology_img3.jpg"
+    ],
+    "videos": ["NeurologyVideo1", "NeurologyVideo2"]
+  },
+  {
+    "id": 3,
+    "name": "Pediatrics",
+    "details": "The Pediatrics Department is where doctors take care of children and teens. From check-ups to treating illnesses, our team makes sure kids grow healthy and strong.",
+    "doctor": "Dr. Patel",
+    "doctor_img": "pediatrics_doctor.jpg",
+    "nurse": "Nurse Lopez",
+    "nurse_img": "pediatrics_nurse.jpg",
+    "dept_map": "pediatrics_map.jpg",
+    "dept_img": ["pediatrics_img1.jpg", "pediatrics_img2.jpg"],
+    "videos": ["PediatricsVideo1"]
+  },
+  {
+    "id": 4,
+    "name": "Cardiology",
+    "details": "The Cardiology Department focuses on the heart. Doctors here check, diagnose, and treat heart conditions to keep young patients' hearts healthy.",
+    "doctor": "Dr. Reynolds",
+    "doctor_img": "cardiology_doctor.jpg",
+    "nurse": "Nurse Adams",
+    "nurse_img": "cardiology_nurse.jpg",
+    "dept_map": "cardiology_map.jpg",
+    "dept_img": ["cardiology_img1.jpg", "cardiology_img2.jpg"],
+    "videos": ["CardiologyVideo1", "CardiologyVideo2"]
+  },
+  {
+    "id": 5,
+    "name": "Orthopedics",
+    "details": "The Orthopedics Department helps children with bones, muscles, and joints. Whether it’s a fracture, injury, or posture problem, our team provides expert care.",
+    "doctor": "Dr. Kim",
+    "doctor_img": "orthopedics_doctor.jpg",
+    "nurse": "Nurse Martinez",
+    "nurse_img": "orthopedics_nurse.jpg",
+    "dept_map": "orthopedics_map.jpg",
+    "dept_img": ["orthopedics_img1.jpg", "orthopedics_img2.jpg"],
+    "videos": ["OrthopedicsVideo1"]
+  },
+  {
+    "id": 6,
+    "name": "Dermatology",
+    "details": "The Dermatology Department treats skin conditions like rashes, acne, or allergies. Doctors help kids keep their skin healthy and comfortable.",
+    "doctor": "Dr. Lin",
+    "doctor_img": "dermatology_doctor.jpg",
+    "nurse": "Nurse Rogers",
+    "nurse_img": "dermatology_nurse.jpg",
+    "dept_map": "dermatology_map.jpg",
+    "dept_img": ["dermatology_img1.jpg", "dermatology_img2.jpg"],
+    "videos": ["DermatologyVideo1"]
+  },
+  {
+    "id": 7,
+    "name": "Ophthalmology",
+    "details": "The Ophthalmology Department takes care of kids’ eyes and vision. Doctors check eyesight and treat problems like nearsightedness or eye infections.",
+    "doctor": "Dr. Green",
+    "doctor_img": "ophthalmology_doctor.jpg",
+    "nurse": "Nurse Bennett",
+    "nurse_img": "ophthalmology_nurse.jpg",
+    "dept_map": "ophthalmology_map.jpg",
+    "dept_img": ["ophthalmology_img1.jpg", "ophthalmology_img2.jpg"],
+    "videos": ["OphthalmologyVideo1"]
+  },
+  {
+    "id": 8,
+    "name": "ENT",
+    "details": "The ENT Department treats ear, nose, and throat problems in children. Doctors handle infections, hearing issues, and other related conditions.",
+    "doctor": "Dr. Walters",
+    "doctor_img": "ent_doctor.jpg",
+    "nurse": "Nurse Collins",
+    "nurse_img": "ent_nurse.jpg",
+    "dept_map": "ent_map.jpg",
+    "dept_img": ["ent_img1.jpg", "ent_img2.jpg"],
+    "videos": ["ENTVideo1", "ENTVideo2"]
+  }
+]
