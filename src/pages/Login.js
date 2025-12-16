@@ -7,14 +7,34 @@ function Login({ setIsLoggedIn, handleLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [buddies, setBuddies] = useState([]);
+  const [selectedBuddy, setSelectedBuddy] = useState(null);
+
+  React.useEffect(() => {
+    const fetchBuddies = async () => {
+      try {
+        const res = await axios.get("http://localhost:5001/api/buddies");
+        setBuddies(res.data);
+      } catch (err) {
+        console.error("Failed to load buddies");
+      }
+    };
+
+    fetchBuddies();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!selectedBuddy) {
+      setError("Please choose a hospital buddy");
+      return;
+    }
 
     try {
       const response = await axios.post("http://localhost:5001/login", {
         hospital_number: hospitalNumber,
         password: password,
+        buddy_id: selectedBuddy.id,
       });
 
       if (response.status === 200) {
@@ -22,6 +42,8 @@ function Login({ setIsLoggedIn, handleLogin }) {
 
         // Store the logged-in user's data
         localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("buddy", JSON.stringify(response.data.buddy));
 
         setIsLoggedIn(true);
         handleLogin(user);
@@ -39,7 +61,7 @@ function Login({ setIsLoggedIn, handleLogin }) {
       style={{ backgroundColor: "#015CE9" }}
     >
       <div
-        className="max-w-md w-full p-8 rounded-2xl shadow"
+        className="max-w-md w-full p-8 rounded-2xl"
         style={{ backgroundColor: "#015CE9" }}
       >
         <div className="text-center mb-6">
@@ -66,6 +88,33 @@ function Login({ setIsLoggedIn, handleLogin }) {
             required
           />
           {error && <div className="text-red-600">{error}</div>}
+          <div>
+            <p className="text-white text-sm mb-2 text-center">
+              Choose your hospital buddy
+            </p>
+
+            <div className="grid grid-cols-4 gap-3 mb-4">
+              {buddies.map((buddy) => (
+                <div
+                  key={buddy.id}
+                  onClick={() => setSelectedBuddy(buddy)}
+                  className={`cursor-pointer p-2 rounded-xl border-2 flex justify-center
+          ${
+            selectedBuddy?.id === buddy.id
+              ? "border-orange-400 bg-white"
+              : "border-transparent bg-blue-500"
+          }
+        `}
+                >
+                  <img
+                    src={`/assets/images/icons/${buddy.icon_filename}`}
+                    alt={buddy.name}
+                    className="w-12 h-12"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
           <button
             type="submit"

@@ -2,12 +2,12 @@
 // IMPORTS
 // ==========================
 const express = require("express");
-const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
+const buddyRoute = require("./routes/buddies");
 // ghjdgd
 // Load environment variables
 dotenv.config();
@@ -29,25 +29,6 @@ app.use(
 app.use(bodyParser.json());
 
 // ==========================
-// MYSQL CONNECTION (MAMP)
-// ==========================
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT, // 8889 for MAMP
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error("❌ MySQL connection failed:", err);
-    return;
-  }
-  console.log("✅ MySQL connected");
-});
-
-// ==========================
 // ROUTES (existing)
 // ==========================
 const registerRoute = require("./routes/register");
@@ -56,6 +37,7 @@ const medicineRoute = require("./routes/medicines");
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/medicines", medicineRoute);
+app.use("/api/buddies", buddyRoute);
 
 // Static JSON routes
 const games = JSON.parse(
@@ -77,5 +59,3 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
-module.exports = { db };

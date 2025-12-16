@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2");
-const db = require("../server").db; // We'll slightly modify server.js to export db
+const db = require("../db").db; // We'll slightly modify server.js to export db
 
 // GET medicines for a user
 router.get("/:userId", (req, res) => {
