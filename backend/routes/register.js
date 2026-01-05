@@ -1,13 +1,3 @@
-/**
- * REGISTER ROUTE (Optimized + Fully Commented)
- * --------------------------------------------
- * - Uses MySQL connection pool for performance
- * - Hashes passwords securely with bcrypt
- * - Validates inputs before inserting
- * - Prevents SQL injection with parameterized queries
- * - Handles errors cleanly
- */
-
 const express = require("express");
 const mysql = require("mysql2/promise"); // Use promise-based MySQL for async/await
 const bcrypt = require("bcrypt");
@@ -15,12 +5,6 @@ require("dotenv").config();
 
 const router = express.Router();
 
-/**
- * Create a MySQL connection pool
- * --------------------------------
- * Pools allow multiple simultaneous connections
- * and handle reconnections automatically
- */
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -29,16 +13,6 @@ const db = mysql.createPool({
   port: process.env.DB_PORT,
 });
 
-/**
- * REGISTER ENDPOINT
- * -----------------
- * Route: POST /register
- * Steps:
- * 1. Validate incoming data
- * 2. Hash the password
- * 3. Insert new user into the database
- * 4. Return success message
- */
 router.post("/", async (req, res) => {
   try {
     const {

@@ -9,7 +9,7 @@ const Medicines = ({ userId }) => {
     const fetchMedicine = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5001/api/medicines/${userId}`
+          `http://localhost:5001/medicines/${userId}`
         );
         setMedicine(res.data);
       } catch (err) {

@@ -5,91 +5,120 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Navigation from "./components/Navigation"; // optional top nav if you have it
-import Sidebar from "./components/Sidebar"; // the sidebar we just made
-import Home from "./pages/Home";
+
+import Sidebar from "./components/Sidebar";
+import MobileHeader from "./components/MobileHeader";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Map from "./pages/Map";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Account from "./pages/dashboard/Account";
 import Games from "./pages/dashboard/Games";
+import Appointments from "./pages/dashboard/Appointment";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Check for stored user on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setIsLoggedIn(true);
-      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
   };
 
-  const handleLogin = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setIsLoggedIn(true);
-    setUser(userData);
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("buddy");
+    setIsLoggedIn(false);
+    setIsSidebarOpen(false);
   };
 
   return (
     <Router>
-      <div className="App flex">
-        {/* Sidebar visible only if logged in */}
-        {isLoggedIn && <Sidebar handleLogout={handleLogout} />}
+      <div className="flex min-h-screen">
+        {/* Mobile Header */}
+        {isLoggedIn && (
+          <MobileHeader onMenuClick={() => setIsSidebarOpen(true)} />
+        )}
 
-        {/* Main content */}
-        <div
-          className={`flex-1 min-h-screen ${isLoggedIn ? "ml-[250px]" : ""}`}
+        {/* Sidebar */}
+        {isLoggedIn && (
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            handleLogout={handleLogout}
+          />
+        )}
+
+        {/* Main Content */}
+        <main
+          className={`
+    flex-1 min-h-screen
+    ${isLoggedIn ? "pt-14 md:pt-0 md:ml-64" : ""}
+  `}
         >
           <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Home />} />
+            {/* Root */}
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <Navigate to="/dashboard" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+
+            {/* Auth */}
             <Route
               path="/login"
               element={
                 isLoggedIn ? (
                   <Navigate to="/dashboard" />
                 ) : (
-                  <Login
-                    setIsLoggedIn={setIsLoggedIn}
-                    handleLogin={handleLogin}
-                  />
+                  <Login handleLogin={handleLogin} />
                 )
               }
             />
+
             <Route
               path="/register"
               element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />}
             />
 
-            {/* Protected routes */}
+            {/* Protected */}
             <Route
               path="/dashboard"
               element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
             />
+
             <Route
               path="/account"
               element={isLoggedIn ? <Account /> : <Navigate to="/login" />}
             />
+
             <Route
               path="/games"
               element={isLoggedIn ? <Games /> : <Navigate to="/login" />}
             />
             <Route
+              path="/appointments"
+              element={isLoggedIn ? <Appointments /> : <Navigate to="/login" />}
+            />
+
+            <Route
               path="/map"
               element={isLoggedIn ? <Map /> : <Navigate to="/login" />}
             />
 
-            {/* Catch-all: redirect logged-in users to dashboard, others to login */}
+            {/* Fallback */}
             <Route
               path="*"
               element={
@@ -101,7 +130,7 @@ function App() {
               }
             />
           </Routes>
-        </div>
+        </main>
       </div>
     </Router>
   );
