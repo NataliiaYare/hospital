@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-function Login({ setIsLoggedIn, handleLogin }) {
+function Login({ handleLogin }) {
   const [hospitalNumber, setHospitalNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,10 +42,8 @@ function Login({ setIsLoggedIn, handleLogin }) {
 
         // Store the logged-in user's data
         localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("buddy", JSON.stringify(response.data.buddy));
 
-        setIsLoggedIn(true);
         handleLogin(user);
 
         navigate("/dashboard");

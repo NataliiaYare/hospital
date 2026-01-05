@@ -1,97 +1,93 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function Sidebar({ handleLogout }) {
+function Sidebar({ handleLogout, isOpen, onClose }) {
   const navigate = useNavigate();
 
   const logout = () => {
     handleLogout();
+    onClose();
     navigate("/login");
   };
 
   return (
-    <nav className="fixed top-0 left-0 h-screen w-64 bg-[#015CE9] rounded-r-3xl shadow-lg flex flex-col justify-between pt-6 px-4">
-      {/* Top Section */}
-      <div>
-        {/* Logo */}
-        <div className="mb-8 text-center">
-          <img src="/logotype.png" alt="logo" className="w-36 mx-auto" />
-        </div>
+    <>
+      {/* Overlay (mobile only) */}
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden
+        ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      />
 
-        {/* Menu Links */}
-        <ul className="space-y-3 text-white">
-          <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 rounded transition-all text-white ${
-                  isActive ? "bg-white text-[#015CE9]" : "hover:bg-blue-700"
-                }`
-              }
-            >
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/appointments"
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 rounded transition-all text-white ${
-                  isActive ? "bg-white text-[#015CE9]" : "hover:bg-blue-700"
-                }`
-              }
-            >
-              Appointments
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/learn"
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 rounded transition-all text-white ${
-                  isActive ? "bg-white text-[#015CE9]" : "hover:bg-blue-700"
-                }`
-              }
-            >
-              Learn
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/games"
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 rounded transition-all text-white ${
-                  isActive ? "bg-white text-[#015CE9]" : "hover:bg-blue-700"
-                }`
-              }
-            >
-              Play
-            </NavLink>
-          </li>
+      {/* Sidebar */}
+      <nav
+        className={`fixed top-0 left-0 z-50
+        h-screen w-64 bg-[#015CE9]
+        rounded-r-3xl shadow-xl
+        flex flex-col justify-between
+        pt-6 px-4
+        transform transition-transform duration-300 ease-in-out
+        md:translate-x-0
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        {/* Top */}
+        <div>
+          {/* Logo */}
+          <div className="mb-8 text-center">
+            <img src="/logotype.png" alt="Logo" className="w-36 mx-auto" />
+          </div>
 
-          {/* Logout button under links */}
-          <li>
+          {/* Navigation */}
+          <ul className="space-y-3 text-white">
+            {[
+              { to: "/dashboard", label: "Dashboard" },
+              { to: "/appointments", label: "Appointments" },
+              { to: "/learn", label: "Learn" },
+              { to: "/games", label: "Play" },
+            ].map(({ to, label }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  onClick={onClose}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded
+                     transition-colors duration-200
+                     ${
+                       isActive
+                         ? "bg-white text-[#015CE9]"
+                         : "text-white hover:bg-blue-700"
+                     }`
+                  }
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+
+            {/* Logout */}
             <li>
               <button
                 onClick={logout}
-                className="w-full text-left px-4 py-2 rounded text-white hover:bg-blue-700 transition-all"
+                className="w-full text-left px-4 py-2 rounded
+                text-white hover:bg-blue-700
+                transition-colors duration-200"
               >
                 Logout
               </button>
             </li>
-          </li>
-        </ul>
-      </div>
+          </ul>
+        </div>
 
-      {/* Bottom Doctor Image */}
-      <div className="mt-6 text-center">
-        <img
-          src="/assets/images/doctor_sidebar.png"
-          alt="Doctor"
-          className="w-40 mx-auto"
-        />
-      </div>
-    </nav>
+        {/* Bottom image */}
+        <div className="text-center">
+          <img
+            src="/assets/images/doctor_sidebar.png"
+            alt="Doctor illustration"
+            className="w-40 mx-auto"
+          />
+        </div>
+      </nav>
+    </>
   );
 }
 

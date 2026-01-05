@@ -1,6 +1,3 @@
-// ==========================
-// IMPORTS
-// ==========================
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -8,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
 const buddyRoute = require("./routes/buddies");
-// ghjdgd
+
 // Load environment variables
 dotenv.config();
 
@@ -34,9 +31,11 @@ app.use(bodyParser.json());
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const medicineRoute = require("./routes/medicines");
+const appointmentsRoute = require("./routes/appointments");
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
-app.use("/medicines", medicineRoute);
+app.use("/api/medicines", medicineRoute);
+app.use("/api/appointments", appointmentsRoute);
 app.use("/api/buddies", buddyRoute);
 
 // Static JSON routes
