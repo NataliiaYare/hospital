@@ -13,7 +13,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Map from "./pages/Map";
 import Dashboard from "./pages/Dashboard";
-import Account from "./pages/dashboard/Account";
 import Games from "./pages/dashboard/Games";
 import Appointments from "./pages/dashboard/Appointment";
 
@@ -97,11 +96,6 @@ function App() {
             <Route
               path="/dashboard"
               element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
-            />
-
-            <Route
-              path="/account"
-              element={isLoggedIn ? <Account /> : <Navigate to="/login" />}
             />
 
             <Route

@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [buddy, setBuddy] = useState(null);
-  const [appointments, setAppointments] = useState([]);
-  const [medicines, setMedicines] = useState([]);
+  const [nextAppointment, setNextAppointment] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -14,30 +13,19 @@ const Dashboard = () => {
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserData(parsedUser);
-
-      // 🔑 FETCH MEDICINES ONLY AFTER USER EXISTS
-      fetch(`http://localhost:5001/api/medicines/${storedUser.id}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to fetch medicines");
-          }
-          return res.json();
-        })
-        .then(setMedicines)
-        .catch((err) => {
-          console.error("Medicines fetch error:", err);
-        });
     }
-
-    fetch(`http://localhost:5001/api/medicines/${storedUser.id}`).then(
-      async (res) => {
-        const text = await res.text();
-        console.log("RAW RESPONSE:", text);
-      }
-    );
 
     if (storedBuddy) setBuddy(JSON.parse(storedBuddy));
   }, []);
+
+  useEffect(() => {
+    if (!userData?.id) return;
+
+    fetch(`http://localhost:5001/api/appointments/${userData.id}/next`)
+      .then((res) => res.json())
+      .then((data) => setNextAppointment(data))
+      .catch((err) => console.error("Next appointment error:", err));
+  }, [userData]);
 
   if (!userData) {
     return <div className="p-6">Loading...</div>;
@@ -75,56 +63,59 @@ const Dashboard = () => {
           </div>
 
           {/* APPOINTMENT */}
-          <div className="bg-white rounded-2xl p-6 shadow">
-            <h4 className="font-bold text-gray-700">Next Appointment</h4>
+          <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-6 shadow flex flex-col justify-between">
+            <div>
+              <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                📅 Next Appointment
+              </h4>
 
-            {appointments ? (
-              <>
-                <p className="text-lg font-semibold mt-2">
-                  {appointments.department}
-                </p>
+              {nextAppointment ? (
+                <>
+                  {/* DATE */}
+                  <div className="text-2xl font-bold text-purple-700 mb-2">
+                    {new Date(
+                      nextAppointment.appointment_date
+                    ).toLocaleDateString(undefined, {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </div>
 
-                <p className="text-gray-600">
-                  {appointments.appointment_date} at{" "}
-                  {appointments.appointment_time}
-                </p>
+                  {/* DETAILS */}
+                  <div className="text-sm text-gray-700 space-y-1">
+                    <p className="font-semibold">
+                      🏥 {nextAppointment.department}
+                    </p>
 
-                {appointments.doctor_name && (
-                  <p className="text-sm text-gray-500">
-                    Doctor: {appointments.doctor_name}
-                  </p>
-                )}
+                    <p>👩‍⚕️ {nextAppointment.doctor_name}</p>
 
-                <p className="text-sm text-gray-500 mt-1">
-                  📍 {appointments.location}
-                </p>
-              </>
-            ) : (
-              <p className="text-gray-400 mt-2">No upcoming appointments</p>
+                    <p>⏰ {nextAppointment.appointment_time}</p>
+
+                    <p className="text-xs text-gray-600">
+                      📍 {nextAppointment.location}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="text-sm text-gray-500">
+                  <p className="mb-1">🎈 No appointments coming up</p>
+                  <p className="text-xs">Enjoy your day!</p>
+                </div>
+              )}
+            </div>
+
+            {/* FOOTER MESSAGE */}
+            {nextAppointment && (
+              <div className="mt-4 text-xs text-purple-700 font-medium">
+                🌟 You’re doing great! We’ll take care of you.
+              </div>
             )}
           </div>
 
           {/* MEDICINE */}
           <div className="bg-white rounded-2xl p-6 shadow">
             <h4 className="font-bold text-gray-700">My Medicines</h4>
-            {medicines.length ? (
-              <div className="space-y-4">
-                {medicines
-                  .sort((a, b) => a.time.localeCompare(b.time)) // sort by time ascending
-                  .map((med) => (
-                    <div
-                      key={med.id}
-                      className="p-4 rounded-xl bg-gray-50 shadow-sm"
-                    >
-                      <p className="font-medium text-gray-800">{med.name}</p>
-                      <p className="text-gray-500">{med.dosage}</p>
-                      <p className="text-gray-500 text-sm">{med.time}</p>
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <p className="text-gray-400">No medicines scheduled</p>
-            )}
           </div>
 
           {/* MAP */}
