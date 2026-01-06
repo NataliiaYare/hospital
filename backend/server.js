@@ -19,10 +19,12 @@ const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const appointmentsRoute = require("./routes/appointments");
 const buddyRoute = require("./routes/buddies");
+const medicinesRoute = require("./routes/medicines");
 
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
-app.use("/api/appointments", appointmentsRoute); // Only attach router
+app.use("/api/appointments", appointmentsRoute);
+app.use("/api/medicines", medicinesRoute);
 app.use("/api/buddies", buddyRoute);
 
 // Static JSON routes
