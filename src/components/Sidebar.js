@@ -34,7 +34,7 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
         <div>
           {/* Logo */}
           <div className="mb-8 text-center">
-            <img src="/logotype.png" alt="Logo" className="w-36 mx-auto" />
+            <img src="/logotype.png" alt="Logo" className="w-32 mx-auto" />
           </div>
 
           {/* Navigation */}
@@ -42,6 +42,7 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
             {[
               { to: "/dashboard", label: "Dashboard" },
               { to: "/appointments", label: "Appointments" },
+              { to: "/medicines", label: "Medicines" },
               { to: "/learn", label: "Learn" },
               { to: "/games", label: "Play" },
             ].map(({ to, label }) => (

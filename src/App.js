@@ -15,6 +15,7 @@ import Map from "./pages/Map";
 import Dashboard from "./pages/Dashboard";
 import Games from "./pages/dashboard/Games";
 import Appointments from "./pages/dashboard/Appointment";
+import Medicines from "./pages/dashboard/Medicines";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -105,6 +106,11 @@ function App() {
             <Route
               path="/appointments"
               element={isLoggedIn ? <Appointments /> : <Navigate to="/login" />}
+            />
+
+            <Route
+              path="/medicines"
+              element={isLoggedIn ? <Medicines /> : <Navigate to="/login" />}
             />
 
             <Route
