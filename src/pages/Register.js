@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const registerUser = async (userData, navigate) => {
   try {
     await axios.post("http://localhost:5001/register", userData);
+<<<<<<< Updated upstream
     navigate("/login");
+=======
+    navigate("/login"); // Redirect to login on success
+>>>>>>> Stashed changes
   } catch (error) {
     console.error("Registration error:", error.response?.data || error.message);
     alert("Error during registration. Please try again.");
@@ -20,12 +24,12 @@ function Register() {
     surname: "",
     hospital_number: "",
     email: "",
-    department_id: "",
     telephone_number: "",
     password: "",
     confirm_password: "",
   });
 
+<<<<<<< Updated upstream
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
@@ -36,6 +40,9 @@ function Register() {
     fetchDepartments();
   }, []);
 
+=======
+  // Handle input changes
+>>>>>>> Stashed changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -45,11 +52,19 @@ function Register() {
 
     const { password, confirm_password, ...userData } = formData;
 
+<<<<<<< Updated upstream
+=======
+    // Validate all fields
+>>>>>>> Stashed changes
     if (Object.values(formData).some((v) => !v)) {
       alert("Please fill in all fields.");
       return;
     }
 
+<<<<<<< Updated upstream
+=======
+    // Validate email
+>>>>>>> Stashed changes
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
       alert("Please enter a valid email.");
       return;
@@ -60,7 +75,14 @@ function Register() {
       return;
     }
 
+<<<<<<< Updated upstream
     userData.password = password;
+=======
+    // Include password in payload
+    userData.password = password;
+
+    // Call API
+>>>>>>> Stashed changes
     await registerUser(userData, navigate);
   };
 
@@ -81,13 +103,13 @@ function Register() {
 
         {/* Form */}
         <form className="space-y-6" onSubmit={handleSubmit}>
+          {/* Left-Right Grid Fields */}
           <div className="grid sm:grid-cols-2 gap-4">
             {[
               { name: "firstName", label: "First Name" },
               { name: "surname", label: "Surname" },
               { name: "hospital_number", label: "Hospital Number" },
               { name: "email", label: "Email", type: "email" },
-              { name: "telephone_number", label: "Telephone No." },
             ].map((field) => (
               <input
                 key={field.name}
@@ -99,22 +121,32 @@ function Register() {
                 className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
               />
             ))}
+          </div>
 
+<<<<<<< Updated upstream
             {/* Department Select */}
             <select
               name="department_id"
               value={formData.department_id}
+=======
+          {/* Telephone centered */}
+          <div className="w-full">
+            <input
+              name="telephone_number"
+              type="text"
+              placeholder="Telephone No."
+              value={formData.telephone_number}
+>>>>>>> Stashed changes
               onChange={handleChange}
-              className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-            >
-              <option value="">Select Department</option>
-              {departments.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
+              className="w-full max-w-md mx-auto text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600 block"
+            />
+          </div>
 
+<<<<<<< Updated upstream
+=======
+          {/* Passwords in same row */}
+          <div className="grid sm:grid-cols-2 gap-4">
+>>>>>>> Stashed changes
             <input
               name="password"
               type="password"
@@ -123,7 +155,10 @@ function Register() {
               onChange={handleChange}
               className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
             />
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             <input
               name="confirm_password"
               type="password"
