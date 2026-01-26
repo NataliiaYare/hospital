@@ -6,7 +6,11 @@ const registerUser = async (userData, navigate) => {
   try {
     await axios.post("http://localhost:5001/register", userData);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     navigate("/login");
+=======
+    navigate("/login"); // Redirect to login on success
+>>>>>>> Stashed changes
 =======
     navigate("/login"); // Redirect to login on success
 >>>>>>> Stashed changes
@@ -30,6 +34,7 @@ function Register() {
   });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
@@ -43,6 +48,9 @@ function Register() {
 =======
   // Handle input changes
 >>>>>>> Stashed changes
+=======
+  // Handle input changes
+>>>>>>> Stashed changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -53,6 +61,10 @@ function Register() {
     const { password, confirm_password, ...userData } = formData;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    // Validate all fields
+>>>>>>> Stashed changes
 =======
     // Validate all fields
 >>>>>>> Stashed changes
@@ -62,6 +74,10 @@ function Register() {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    // Validate email
+>>>>>>> Stashed changes
 =======
     // Validate email
 >>>>>>> Stashed changes
@@ -76,12 +92,18 @@ function Register() {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     userData.password = password;
 =======
+=======
+>>>>>>> Stashed changes
     // Include password in payload
     userData.password = password;
 
     // Call API
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     await registerUser(userData, navigate);
   };
@@ -124,11 +146,14 @@ function Register() {
           </div>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             {/* Department Select */}
             <select
               name="department_id"
               value={formData.department_id}
 =======
+=======
+>>>>>>> Stashed changes
           {/* Telephone centered */}
           <div className="w-full">
             <input
@@ -136,6 +161,9 @@ function Register() {
               type="text"
               placeholder="Telephone No."
               value={formData.telephone_number}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               onChange={handleChange}
               className="w-full max-w-md mx-auto text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600 block"
@@ -143,6 +171,11 @@ function Register() {
           </div>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+          {/* Passwords in same row */}
+          <div className="grid sm:grid-cols-2 gap-4">
+>>>>>>> Stashed changes
 =======
           {/* Passwords in same row */}
           <div className="grid sm:grid-cols-2 gap-4">
@@ -156,7 +189,10 @@ function Register() {
               className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
             />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             <input
