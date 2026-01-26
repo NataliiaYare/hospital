@@ -1,9 +1,11 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+// Sidebar component handles navigation, logout, and mobile visibility
 function Sidebar({ handleLogout, isOpen, onClose }) {
   const navigate = useNavigate();
 
+  // Logs the user out, closes the sidebar, and redirects to login page
   const logout = () => {
     handleLogout();
     onClose();
@@ -12,14 +14,14 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
 
   return (
     <>
-      {/* Overlay (mobile only) */}
+      {/* Dark overlay shown behind sidebar on mobile */}
       <div
-        onClick={onClose}
+        onClick={onClose} // Close sidebar when overlay is clicked
         className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden
         ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       />
 
-      {/* Sidebar */}
+      {/* Sidebar navigation container */}
       <nav
         className={`fixed top-0 left-0 z-50
         h-screen w-64 bg-[#015CE9]
@@ -30,14 +32,14 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
         md:translate-x-0
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Top */}
+        {/* Top section (logo + navigation links) */}
         <div>
-          {/* Logo */}
+          {/* App logo */}
           <div className="mb-8 text-center">
             <img src="/logotype.png" alt="Logo" className="w-32 mx-auto" />
           </div>
 
-          {/* Navigation */}
+          {/* Navigation links */}
           <ul className="space-y-3 text-white">
             {[
               { to: "/dashboard", label: "Dashboard" },
@@ -49,14 +51,14 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
               <li key={to}>
                 <NavLink
                   to={to}
-                  onClick={onClose}
+                  onClick={onClose} // Close sidebar after navigation (mobile)
                   className={({ isActive }) =>
                     `flex items-center px-4 py-2 rounded
                      transition-colors duration-200
                      ${
                        isActive
-                         ? "bg-white text-[#015CE9]"
-                         : "text-white hover:bg-blue-700"
+                         ? "bg-white text-[#015CE9]" // Active link styling
+                         : "text-white hover:bg-blue-700" // Inactive link styling
                      }`
                   }
                 >
@@ -65,10 +67,10 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
               </li>
             ))}
 
-            {/* Logout */}
+            {/* Logout button */}
             <li>
               <button
-                onClick={logout}
+                onClick={logout} // Trigger logout flow
                 className="w-full text-left px-4 py-2 rounded
                 text-white hover:bg-blue-700
                 transition-colors duration-200"
@@ -79,7 +81,7 @@ function Sidebar({ handleLogout, isOpen, onClose }) {
           </ul>
         </div>
 
-        {/* Bottom image */}
+        {/* Bottom illustration image */}
         <div className="text-center">
           <img
             src="/assets/images/doctor_sidebar.png"

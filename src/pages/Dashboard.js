@@ -4,27 +4,26 @@ import axios from "axios";
 
 const Dashboard = () => {
   // ----------------------------
-  // User & Buddy
+  // USER & HOSPITAL BUDDY STATE
   // ----------------------------
-  const [userData, setUserData] = useState(null);
-  const [buddy, setBuddy] = useState(null);
+  const [userData, setUserData] = useState(null); // Logged-in user info
+  const [buddy, setBuddy] = useState(null);       // User's selected hospital buddy
 
   // ----------------------------
-  // Appointments & Medicines
+  // APPOINTMENTS & MEDICINES STATE
   // ----------------------------
-  const [nextAppointment, setNextAppointment] = useState(null);
-  const [nextMedicine, setNextMedicine] = useState(null);
+  const [nextAppointment, setNextAppointment] = useState(null); // Next appointment info
+  const [nextMedicine, setNextMedicine] = useState(null);       // Next medicine info
 
   // ----------------------------
   // MOOD TILE STATE
   // ----------------------------
-  const [moods, setMoods] = useState([]);
-
-  const [selectedMood, setSelectedMood] = useState(null); // today's selected mood
-  const [moodError, setMoodError] = useState(null); // for catching fetch errors
+  const [moods, setMoods] = useState([]);          // List of available moods
+  const [selectedMood, setSelectedMood] = useState(null); // Today's selected mood
+  const [moodError, setMoodError] = useState(null);       // Error handling for moods
 
   // ----------------------------
-  // Load user and buddy from localStorage
+  // LOAD USER & BUDDY FROM localStorage
   // ----------------------------
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -35,7 +34,7 @@ const Dashboard = () => {
   }, []);
 
   // ----------------------------
-  // Fetch next appointment
+  // FETCH NEXT APPOINTMENT
   // ----------------------------
   useEffect(() => {
     if (!userData?.id) return;
@@ -47,7 +46,7 @@ const Dashboard = () => {
   }, [userData]);
 
   // ----------------------------
-  // Fetch next medicine
+  // FETCH NEXT MEDICINE
   // ----------------------------
   useEffect(() => {
     if (!userData?.id) return;
@@ -59,14 +58,12 @@ const Dashboard = () => {
   }, [userData]);
 
   // ----------------------------
-  // Fetch available moods (icons + labels + text)
+  // FETCH AVAILABLE MOODS
   // ----------------------------
   useEffect(() => {
     axios
       .get("http://localhost:5001/api/moods")
-      .then((res) => {
-        setMoods(res.data);
-      })
+      .then((res) => setMoods(res.data))
       .catch((err) => {
         console.error("Error fetching moods:", err);
         setMoodError("Cannot load moods");
@@ -74,21 +71,18 @@ const Dashboard = () => {
   }, []);
 
   // ----------------------------
-  // Fetch today's mood from backend
+  // FETCH TODAY'S MOOD
   // ----------------------------
   useEffect(() => {
     if (!userData?.id) return;
 
-    // defensive: use try/catch to prevent breaking if endpoint 404s
     axios
       .get(`http://localhost:5001/api/moods/${userData.id}/today`)
-
       .then((res) => {
-        if (res.data) {
-          setSelectedMood(res.data); // set today's mood if exists
-        }
+        if (res.data) setSelectedMood(res.data);
       })
       .catch((err) => {
+        // Ignore 404 (no mood recorded yet), show other errors
         if (err.response?.status !== 404) {
           setMoodError("Cannot load today's mood");
         }
@@ -96,7 +90,7 @@ const Dashboard = () => {
   }, [userData]);
 
   // ----------------------------
-  // Handle taking medicine
+  // HANDLE TAKING MEDICINE
   // ----------------------------
   const handleTakeMedicine = (id) => {
     if (!userData?.id) return;
@@ -104,9 +98,12 @@ const Dashboard = () => {
     axios
       .put(`http://localhost:5001/api/medicines/${id}/take`)
       .then(() => {
+        // Optimistic update: mark medicine as taken
         setNextMedicine((prev) =>
           prev && prev.id === id ? { ...prev, is_taken: 1 } : prev
         );
+
+        // Re-fetch next medicine
         return axios.get(
           `http://localhost:5001/api/medicines/${userData.id}/next`
         );
@@ -116,23 +113,21 @@ const Dashboard = () => {
   };
 
   // ----------------------------
-  // Handle selecting mood
+  // HANDLE SELECTING MOOD
   // ----------------------------
   const handleSelectMood = async (moodId) => {
     if (!userData?.id) return;
 
     try {
-      // 1️⃣ Save mood for today
+      // Save selected mood for today
       await axios.post(`http://localhost:5001/api/moods/${userData.id}`, {
         mood_id: moodId,
       });
 
-      // 2️⃣ Re-fetch today's mood (full data)
+      // Re-fetch today's mood to get full details
       const res = await axios.get(
         `http://localhost:5001/api/moods/${userData.id}/today`
       );
-
-      // 3️⃣ Update UI with complete mood info
       setSelectedMood(res.data);
       setMoodError(null);
     } catch (err) {
@@ -141,14 +136,20 @@ const Dashboard = () => {
     }
   };
 
+  // ----------------------------
+  // LOADING STATE
+  // ----------------------------
   if (!userData) return <div className="p-6">Loading...</div>;
 
+  // ----------------------------
+  // DASHBOARD JSX
+  // ----------------------------
   return (
     <main className="min-h-screen bg-slate-100 p-4 md:p-8">
       <section className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-        {/* LEFT SIDE – MAIN DASHBOARD */}
+        {/* -------------------- LEFT SIDE – MAIN DASHBOARD -------------------- */}
         <div className="grid grid-cols-1 gap-6">
-          {/* HEADER */}
+          {/* HEADER: Welcome message + buddy */}
           <div className="bg-white rounded-2xl p-6 flex items-center gap-6 shadow">
             {buddy ? (
               <img
@@ -183,23 +184,16 @@ const Dashboard = () => {
               {nextAppointment ? (
                 <>
                   <div className="text-2xl font-bold text-purple-700 mb-2">
-                    {new Date(
-                      nextAppointment.appointment_date
-                    ).toLocaleDateString(undefined, {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "short",
-                    })}
+                    {new Date(nextAppointment.appointment_date).toLocaleDateString(
+                      undefined,
+                      { weekday: "short", day: "numeric", month: "short" }
+                    )}
                   </div>
                   <div className="text-sm text-gray-700 space-y-1">
-                    <p className="font-semibold">
-                      🏥 {nextAppointment.department}
-                    </p>
+                    <p className="font-semibold">🏥 {nextAppointment.department}</p>
                     <p>👩‍⚕️ {nextAppointment.doctor_name}</p>
                     <p>⏰ {nextAppointment.appointment_time}</p>
-                    <p className="text-xs text-gray-600">
-                      📍 {nextAppointment.location}
-                    </p>
+                    <p className="text-xs text-gray-600">📍 {nextAppointment.location}</p>
                   </div>
                   <div className="mt-4 text-xs text-purple-700 font-medium">
                     🌟 You’re doing great! We’ll take care of you.
@@ -235,18 +229,14 @@ const Dashboard = () => {
                   </button>
                 </>
               ) : (
-                <p className="text-sm text-gray-500">
-                  🎉 All medicines taken for today!
-                </p>
+                <p className="text-sm text-gray-500">🎉 All medicines taken for today!</p>
               )}
             </div>
           </div>
 
           {/* MAP & LEARN ROW */}
           <div className="mt-6">
-            <h4 className="text-gray-700 font-semibold mb-3">
-              Explore & Learn
-            </h4>
+            <h4 className="text-gray-700 font-semibold mb-3">Explore & Learn</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* MAP TILE */}
               <Link
@@ -264,9 +254,7 @@ const Dashboard = () => {
                   <h3 className="text-2xl font-bold flex items-center gap-2">
                     Hospital Map 🗺️
                   </h3>
-                  <p className="text-sm text-white/90 mt-1">
-                    Let’s find where you need to go!
-                  </p>
+                  <p className="text-sm text-white/90 mt-1">Let’s find where you need to go!</p>
                   <div className="flex gap-3 text-lg mt-3">
                     <span title="Pharmacy">💊</span>
                     <span title="X-Ray">🩻</span>
@@ -274,9 +262,7 @@ const Dashboard = () => {
                     <span title="Emergency">🚑</span>
                   </div>
                 </div>
-                <div className="ml-auto text-white text-2xl opacity-0 group-hover:opacity-100 transition">
-                  ➜
-                </div>
+                <div className="ml-auto text-white text-2xl opacity-0 group-hover:opacity-100 transition">➜</div>
               </Link>
 
               {/* LEARN TILE */}
@@ -295,13 +281,9 @@ const Dashboard = () => {
                   <h3 className="text-2xl font-bold flex items-center gap-2">
                     Learn About Hospital
                   </h3>
-                  <p className="text-sm text-white/90 mt-1">
-                    Explore and understand your hospital environment!
-                  </p>
+                  <p className="text-sm text-white/90 mt-1">Explore and understand your hospital environment!</p>
                 </div>
-                <div className="ml-auto text-white text-2xl opacity-0 group-hover:opacity-100 transition">
-                  ➜
-                </div>
+                <div className="ml-auto text-white text-2xl opacity-0 group-hover:opacity-100 transition">➜</div>
               </Link>
             </div>
           </div>
@@ -316,19 +298,14 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        {/* RIGHT SIDE – MOOD TILE */}
+        {/* -------------------- RIGHT SIDE – MOOD TILE -------------------- */}
         <div className="order-last lg:order-none bg-purple-500 rounded-2xl p-6 text-white flex flex-col items-center justify-center">
-          {/* Tile title */}
-          <h3 className="text-2xl font-bold mb-6 text-center">
-            Your Mood Today 🌈
-          </h3>
+          <h3 className="text-2xl font-bold mb-6 text-center">Your Mood Today 🌈</h3>
 
-          {/* Error message if mood fetch failed */}
-          {moodError && (
-            <p className="text-red-200 text-sm mb-4 text-center">{moodError}</p>
-          )}
+          {/* Error message if moods fail to load */}
+          {moodError && <p className="text-red-200 text-sm mb-4 text-center">{moodError}</p>}
 
-          {/* Mood buttons */}
+          {/* Mood selection buttons */}
           <div className="grid grid-cols-3 gap-5">
             {moods.map((mood) => {
               const isSelected = selectedMood?.mood_id === mood.id;
@@ -339,27 +316,23 @@ const Dashboard = () => {
                   onClick={() => handleSelectMood(mood.id)}
                   title={mood.label}
                   className={`
-            flex flex-col items-center justify-center
-            p-4 rounded-2xl
-            transition-all duration-200 ease-out
-            focus:outline-none
-            ${
-              isSelected
-                ? "scale-125 bg-white/20 ring-4 ring-white shadow-xl"
-                : "opacity-60 hover:opacity-100 hover:scale-105"
-            }
-          `}
+                    flex flex-col items-center justify-center
+                    p-4 rounded-2xl
+                    transition-all duration-200 ease-out
+                    focus:outline-none
+                    ${
+                      isSelected
+                        ? "scale-125 bg-white/20 ring-4 ring-white shadow-xl"
+                        : "opacity-60 hover:opacity-100 hover:scale-105"
+                    }
+                  `}
                 >
                   <img
                     src={`/assets/images/icons/emoji/${mood.emoji_filename}`}
                     alt={mood.label}
                     className="w-16 h-16 object-contain"
                   />
-
-                  {/* Optional label under emoji */}
-                  <span className="mt-2 text-xs font-semibold">
-                    {mood.label}
-                  </span>
+                  <span className="mt-2 text-xs font-semibold">{mood.label}</span>
                 </button>
               );
             })}
@@ -368,16 +341,12 @@ const Dashboard = () => {
           {/* Encouragement text */}
           {selectedMood && (
             <div className="mt-6 text-center bg-white/20 rounded-xl p-4 max-w-xs">
-              <h4 className="font-bold text-lg mb-1">
-                {selectedMood.encouragement_title}
-              </h4>
-              <p className="text-sm leading-relaxed">
-                {selectedMood.encouragement_text}
-              </p>
+              <h4 className="font-bold text-lg mb-1">{selectedMood.encouragement_title}</h4>
+              <p className="text-sm leading-relaxed">{selectedMood.encouragement_text}</p>
             </div>
           )}
 
-          {/* Optional: Mood streak */}
+          {/* Mood streak */}
           {selectedMood?.streak && (
             <div className="mt-4 text-yellow-200 font-semibold text-sm text-center">
               🌟 Mood streak: {selectedMood.streak} day

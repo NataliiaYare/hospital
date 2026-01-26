@@ -6,9 +6,11 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Sidebar from "./components/Sidebar";
-import MobileHeader from "./components/MobileHeader";
+// Components
+import Sidebar from "./components/Sidebar";         // Sidebar navigation
+import MobileHeader from "./components/MobileHeader"; // Mobile top header
 
+// Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Map from "./pages/Map";
@@ -19,36 +21,49 @@ import Medicines from "./pages/dashboard/Medicines";
 import Learn from "./pages/dashboard/Learn";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // ----------------------------
+  // AUTH STATE
+  // ----------------------------
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Tracks if user is logged in
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar toggle
 
+  // ----------------------------
+  // ON INITIAL LOAD: CHECK LOCAL STORAGE
+  // ----------------------------
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setIsLoggedIn(true);
+      setIsLoggedIn(true); // User is logged in if data exists in localStorage
     }
   }, []);
 
+  // ----------------------------
+  // HANDLERS
+  // ----------------------------
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    setIsLoggedIn(true); // Called after successful login
   };
 
   const handleLogout = () => {
+    // Clear user data & reset auth/sidebar states
     localStorage.removeItem("user");
     localStorage.removeItem("buddy");
     setIsLoggedIn(false);
     setIsSidebarOpen(false);
   };
 
+  // ----------------------------
+  // RENDER
+  // ----------------------------
   return (
     <Router>
       <div className="flex min-h-screen">
-        {/* Mobile Header */}
+        {/* ---------------- MOBILE HEADER ---------------- */}
         {isLoggedIn && (
           <MobileHeader onMenuClick={() => setIsSidebarOpen(true)} />
         )}
 
-        {/* Sidebar */}
+        {/* ---------------- SIDEBAR ---------------- */}
         {isLoggedIn && (
           <Sidebar
             isOpen={isSidebarOpen}
@@ -57,34 +72,34 @@ function App() {
           />
         )}
 
-        {/* Main Content */}
+        {/* ---------------- MAIN CONTENT ---------------- */}
         <main
           className={`
-    flex-1 min-h-screen
-    ${isLoggedIn ? "pt-14 md:pt-0 md:ml-64" : ""}
-  `}
+            flex-1 min-h-screen
+            ${isLoggedIn ? "pt-14 md:pt-0 md:ml-64" : ""} // Adjust for sidebar/header
+          `}
         >
           <Routes>
-            {/* Root */}
+            {/* ---------------- ROOT ROUTE ---------------- */}
             <Route
               path="/"
               element={
                 isLoggedIn ? (
-                  <Navigate to="/dashboard" replace />
+                  <Navigate to="/dashboard" replace /> // Redirect logged-in users to dashboard
                 ) : (
-                  <Navigate to="/login" replace />
+                  <Navigate to="/login" replace />     // Redirect guests to login
                 )
               }
             />
 
-            {/* Auth */}
+            {/* ---------------- AUTH ROUTES ---------------- */}
             <Route
               path="/login"
               element={
                 isLoggedIn ? (
-                  <Navigate to="/dashboard" />
+                  <Navigate to="/dashboard" /> // Already logged in? redirect
                 ) : (
-                  <Login handleLogin={handleLogin} />
+                  <Login handleLogin={handleLogin} /> // Show login page
                 )
               }
             />
@@ -94,12 +109,11 @@ function App() {
               element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />}
             />
 
-            {/* Protected */}
+            {/* ---------------- PROTECTED ROUTES ---------------- */}
             <Route
               path="/dashboard"
               element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
             />
-
             <Route
               path="/games"
               element={isLoggedIn ? <Games /> : <Navigate to="/login" />}
@@ -108,30 +122,27 @@ function App() {
               path="/appointments"
               element={isLoggedIn ? <Appointments /> : <Navigate to="/login" />}
             />
-
             <Route
               path="/medicines"
               element={isLoggedIn ? <Medicines /> : <Navigate to="/login" />}
             />
-
             <Route
               path="/map"
               element={isLoggedIn ? <Map /> : <Navigate to="/login" />}
             />
-
             <Route
               path="/learn"
               element={isLoggedIn ? <Learn /> : <Navigate to="/login" />}
             />
 
-            {/* Fallback */}
+            {/* ---------------- FALLBACK ROUTE ---------------- */}
             <Route
               path="*"
               element={
                 isLoggedIn ? (
-                  <Navigate to="/dashboard" />
+                  <Navigate to="/dashboard" /> // Any unknown path for logged-in user
                 ) : (
-                  <Navigate to="/login" />
+                  <Navigate to="/login" />     // Unknown path for guest
                 )
               }
             />

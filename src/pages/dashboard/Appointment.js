@@ -5,9 +5,14 @@ import { Link } from "react-router-dom";
 /* -----------------------------------
    Interactive checklist component
 ----------------------------------- */
+
+// PreparationChecklist handles an interactive checklist
+// for getting ready for a specific appointment
 const PreparationChecklist = ({ appointmentId }) => {
+  // Unique key for localStorage based on appointment ID
   const storageKey = `checklist_appointment_${appointmentId}`;
 
+  // List of checklist items
   const checklistItems = [
     { id: "card", label: "Bring hospital card", icon: "🪪" },
     { id: "medicine", label: "Bring medicines", icon: "💊" },
@@ -15,9 +20,10 @@ const PreparationChecklist = ({ appointmentId }) => {
     { id: "water", label: "Drink some water", icon: "💧" },
   ];
 
+  // State to track which items are checked
   const [checkedItems, setCheckedItems] = useState({});
 
-  // Load checklist from storage
+  // Load saved checklist state from localStorage
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -25,7 +31,7 @@ const PreparationChecklist = ({ appointmentId }) => {
     }
   }, [storageKey]);
 
-  // Toggle checkbox
+  // Toggle a checklist item and save to localStorage
   const toggleItem = (id) => {
     const updated = {
       ...checkedItems,
@@ -42,15 +48,16 @@ const PreparationChecklist = ({ appointmentId }) => {
         🧠 Prepare for your visit
       </h4>
 
+      {/* Checklist items */}
       <ul className="space-y-2">
         {checklistItems.map((item) => (
           <li
             key={item.id}
-            onClick={() => toggleItem(item.id)}
+            onClick={() => toggleItem(item.id)} // Handle item click
             className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition
               ${
                 checkedItems[item.id]
-                  ? "bg-purple-200 text-purple-900 line-through"
+                  ? "bg-purple-200 text-purple-900 line-through" // Style for checked items
                   : "hover:bg-purple-100 text-purple-800"
               }
             `}
@@ -62,9 +69,8 @@ const PreparationChecklist = ({ appointmentId }) => {
         ))}
       </ul>
 
-      {/* Encouragement */}
-      {Object.values(checkedItems).filter(Boolean).length ===
-        checklistItems.length && (
+      {/* Encouragement message when all items are checked */}
+      {Object.values(checkedItems).filter(Boolean).length === checklistItems.length && (
         <p className="mt-3 text-sm text-purple-700 font-medium">
           🌟 Great job! You are all ready!
         </p>
@@ -76,12 +82,17 @@ const PreparationChecklist = ({ appointmentId }) => {
 /* -----------------------------------
    Appointments page
 ----------------------------------- */
+
+// Appointments page fetches and displays all user appointments
+// and includes the interactive PreparationChecklist for each
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
 
+  // Get user ID from localStorage
   const storedUser = localStorage.getItem("user");
   const userid = storedUser ? JSON.parse(storedUser).id : null;
 
+  // Fetch appointments from backend API when user ID is available
   useEffect(() => {
     if (!userid) return;
 
@@ -117,7 +128,7 @@ const Appointments = () => {
               key={appt.id}
               className="bg-white rounded-2xl p-6 shadow hover:scale-[1.01] transition-transform"
             >
-              {/* TOP */}
+              {/* TOP: department badge and time */}
               <div className="flex items-center justify-between mb-3">
                 <span className="px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700">
                   {appt.department}
@@ -128,7 +139,7 @@ const Appointments = () => {
                 </span>
               </div>
 
-              {/* MAIN */}
+              {/* MAIN: date and doctor */}
               <h3 className="text-lg font-bold text-gray-800 mb-1">
                 {new Date(appt.appointment_date).toLocaleDateString()}
               </h3>

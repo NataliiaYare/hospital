@@ -4,10 +4,10 @@ import React, { useState } from "react";
 const markerConfig = {
   x_ray: {
     label: "Radiology (X-Ray)",
-    top: "56%",
-    left: "48%",
-    color: "#a21caf",
-    icon: "🩻",
+    top: "56%", // Vertical position relative to map image
+    left: "48%", // Horizontal position relative to map image
+    color: "#a21caf", // Marker color
+    icon: "🩻", // Emoji for button/tooltip
   },
   neurology: {
     label: "Clinical Decisions Unit",
@@ -46,9 +46,9 @@ const markerConfig = {
   },
 };
 
-/* 🧭 Animated paths from Main Entrance */
+/* 🧭 Animated paths from Main Entrance to each location */
 const pathConfig = {
-  x_ray: "M 70 46 L 55 46 L 48 56",
+  x_ray: "M 70 46 L 55 46 L 48 56", // SVG path from main entrance to X-Ray
   pharmacy: "M 70 46 L 63 73",
   emergency: "M 70 46 L 23 61",
   fun: "M 70 46 L 60 18",
@@ -56,26 +56,25 @@ const pathConfig = {
 };
 
 function Map() {
-  const [activeMarker, setActiveMarker] = useState(null);
+  const [activeMarker, setActiveMarker] = useState(null); // Currently hovered or selected marker
 
   return (
     <main className="min-h-screen bg-slate-100 p-4 md:p-8">
       {/* HEADER */}
       <h2 className="text-3xl font-bold text-center mb-2">🗺️ Hospital Map</h2>
-
       <p className="text-center text-gray-600 mb-6">
         🐾 Tap a place and follow the dotted line!
       </p>
 
-      {/* BUTTONS */}
+      {/* BUTTONS – clickable shortcuts to each location */}
       <div className="flex flex-wrap justify-center gap-3 mb-6">
         {Object.keys(markerConfig).map((key) => (
           <button
             key={key}
-            onClick={() => setActiveMarker(key)}
+            onClick={() => setActiveMarker(key)} // Set active marker on click
             className="px-4 py-2 rounded-xl text-white font-semibold shadow-md hover:scale-105 transition"
             style={{ backgroundColor: markerConfig[key].color }}
-            aria-label={`Go to ${markerConfig[key].label}`}
+            aria-label={`Go to ${markerConfig[key].label}`} // Accessibility
           >
             {markerConfig[key].icon} {markerConfig[key].label}
           </button>
@@ -91,24 +90,24 @@ function Map() {
           className="w-full h-auto rounded-2xl shadow-lg"
         />
 
-        {/* SVG PATH OVERLAY */}
+        {/* SVG PATH OVERLAY – dotted line from main entrance to selected marker */}
         <svg
           viewBox="0 0 100 100"
           className="absolute inset-0 w-full h-full pointer-events-none"
         >
           {activeMarker && pathConfig[activeMarker] && (
             <path
-              d={pathConfig[activeMarker]}
+              d={pathConfig[activeMarker]} // Path coordinates
               fill="none"
-              stroke={markerConfig[activeMarker].color}
+              stroke={markerConfig[activeMarker].color} // Match marker color
               strokeWidth="2"
-              strokeDasharray="4 4"
-              className="animate-dash"
+              strokeDasharray="4 4" // Makes line dashed
+              className="animate-dash" // Optional CSS animation
             />
           )}
         </svg>
 
-        {/* MARKERS */}
+        {/* MARKERS – positioned pins on map */}
         {Object.keys(markerConfig).map((key) => (
           <div
             key={key}
@@ -117,11 +116,11 @@ function Map() {
               top: markerConfig[key].top,
               left: markerConfig[key].left,
             }}
-            onMouseEnter={() => setActiveMarker(key)}
-            onMouseLeave={() => setActiveMarker(null)}
-            onClick={() => setActiveMarker(key)}
+            onMouseEnter={() => setActiveMarker(key)} // Show tooltip on hover
+            onMouseLeave={() => setActiveMarker(null)} // Hide tooltip on leave
+            onClick={() => setActiveMarker(key)} // Activate marker on click
           >
-            {/* PIN */}
+            {/* PIN ICON */}
             <div
               className="text-3xl drop-shadow-lg animate-bounce"
               style={{ color: markerConfig[key].color }}
@@ -134,8 +133,8 @@ function Map() {
               className={`absolute -top-14 left-1/2 -translate-x-1/2 px-3 py-1 rounded-lg text-white text-sm font-semibold shadow-lg transition-all duration-300
               ${
                 activeMarker === key
-                  ? "opacity-100 scale-100"
-                  : "opacity-0 scale-90 pointer-events-none"
+                  ? "opacity-100 scale-100" // Show tooltip
+                  : "opacity-0 scale-90 pointer-events-none" // Hide tooltip
               }`}
               style={{ backgroundColor: markerConfig[key].color }}
             >
